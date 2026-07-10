@@ -36,6 +36,11 @@ try {
 
   await setViewport(cdp, 1440, 1100, false);
   await navigate(cdp, `${baseUrl}/remont/telefony/apple/iphone-15/`);
+  await expect(
+    cdp,
+    "header counters centered",
+    "[...document.querySelectorAll('.odometer')].every((card) => { const cardRect = card.getBoundingClientRect(); const cardCenter = (cardRect.left + cardRect.right) / 2; return [...card.querySelectorAll('.odometer__num, .odometer__label')].every((item) => { const rect = item.getBoundingClientRect(); const itemCenter = (rect.left + rect.right) / 2; return Math.abs(itemCenter - cardCenter) <= 2; }); })"
+  );
   await expect(cdp, "desktop price rows", "document.querySelectorAll('.price-row').length >= 10");
   await expect(cdp, "category tabs have icons", "document.querySelectorAll('.catalog-tabs .tab-icon').length >= 4");
   await expect(cdp, "active category icon present", "document.querySelector('.catalog-tabs .tab.active .tab-icon') !== null");
