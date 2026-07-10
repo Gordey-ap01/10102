@@ -1,4 +1,4 @@
-/* Service 101 / Project 3 redesign */
+/* Service 101 */
 *,
 *::before,
 *::after {
@@ -1490,24 +1490,26 @@ img {
   }
 
   .odometer-strip {
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    overflow: visible;
     padding-bottom: 2px;
   }
 
   .odometer {
-    flex: 0 0 132px;
-    padding: 8px 10px;
+    min-width: 0;
+    padding: 7px 8px;
     border-radius: 15px;
   }
 
   .odometer__num {
-    font-size: 19px;
+    font-size: 18px;
   }
 
   .odometer__label {
-    font-size: 10px;
+    font-size: 9px;
+    letter-spacing: 0.08em;
   }
 
   .hero {
@@ -1664,7 +1666,7 @@ img {
   }
 }
 
-/* Fidelity pass: closer to the light, minimal Project 3 direction */
+/* Light minimal service layout */
 body {
   background: #f8fafc;
   color: #0f172a;
@@ -1678,8 +1680,10 @@ body {
 }
 
 .brand__mark {
-  background: #020617;
-  color: #fff;
+  border-color: #bae6fd;
+  background: #e0f2fe;
+  color: #0369a1;
+  box-shadow: none;
 }
 
 .brand__name {
@@ -1834,7 +1838,11 @@ body {
 }
 
 .catalog-top__inner {
-  padding-block: 22px 20px;
+  padding-block: 16px 14px;
+}
+
+.catalog-section {
+  padding-block: 26px clamp(46px, 6vw, 72px);
 }
 
 .catalog-tabs,
@@ -1981,6 +1989,25 @@ body {
   color: #0369a1;
 }
 
+.extra-services:not([hidden]) {
+  display: grid;
+}
+
+.expand-services {
+  border: 0;
+  border-top: 1px solid #e2e8f0;
+  padding: 17px 24px;
+  background: #f8fafc;
+  color: #0284c7;
+  font-size: 14px;
+  font-weight: 650;
+  text-align: center;
+}
+
+.expand-services:hover {
+  background: #f0f9ff;
+}
+
 .section-dark {
   background: #fff;
   color: #0f172a;
@@ -2011,6 +2038,13 @@ body {
   color: #0f172a;
 }
 
+.review-card span {
+  display: block;
+  margin-top: 4px;
+  color: #64748b;
+  font-size: 13px;
+}
+
 .review-link {
   border-color: #e2e8f0;
   background: #fff;
@@ -2032,6 +2066,87 @@ body {
 
 .cta-band p {
   color: #475569;
+}
+
+.contact-section {
+  border-top: 1px solid #e2e8f0;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.8fr) minmax(0, 1.2fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.contact-form,
+.contact-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 28px;
+  padding: 22px;
+  background: #fff;
+  box-shadow: 0 14px 42px rgba(15, 23, 42, 0.045);
+}
+
+.contact-form {
+  display: grid;
+  gap: 12px;
+}
+
+.contact-form textarea {
+  min-height: 132px;
+  resize: vertical;
+}
+
+.contact-card {
+  display: grid;
+  gap: 16px;
+}
+
+.branch-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.branch-item {
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 16px;
+  background: #f8fafc;
+}
+
+.branch-item strong,
+.branch-item span,
+.contact-lines a {
+  display: block;
+}
+
+.branch-item strong {
+  color: #0f172a;
+  font-weight: 650;
+}
+
+.branch-item span {
+  margin-top: 6px;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.contact-lines {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  color: #0369a1;
+  font-weight: 650;
+}
+
+.map-frame {
+  width: 100%;
+  min-height: 360px;
+  border: 0;
+  border-radius: 22px;
+  background: #e2e8f0;
 }
 
 .footer {
@@ -2078,6 +2193,12 @@ body {
     font-size: clamp(38px, 13vw, 58px);
   }
 
+  .section-title {
+    font-size: 26px;
+    line-height: 1.12;
+    letter-spacing: -0.025em;
+  }
+
   .page-title {
     font-size: 34px;
   }
@@ -2093,5 +2214,14 @@ body {
 
   .device-title {
     font-size: 28px;
+  }
+
+  .contact-grid,
+  .branch-list {
+    grid-template-columns: 1fr;
+  }
+
+  .map-frame {
+    min-height: 300px;
   }
 }

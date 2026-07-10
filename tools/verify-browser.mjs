@@ -37,6 +37,10 @@ try {
   await setViewport(cdp, 1440, 1100, false);
   await navigate(cdp, `${baseUrl}/remont/telefony/apple/iphone-15/`);
   await expect(cdp, "desktop price rows", "document.querySelectorAll('.price-row').length >= 10");
+  await expect(cdp, "no repeated page title", "document.querySelector('.page-title') === null");
+  await expect(cdp, "no available works heading", "document.querySelector('.prices-panel__head h2') === null");
+  await expect(cdp, "collapsed services button", "document.querySelector('.expand-services')?.textContent.includes('Раскройте')");
+  await expect(cdp, "contact block present", "document.querySelector('.contact-section .contact-form') !== null && document.querySelector('.map-frame') !== null");
   await expect(cdp, "desktop no body overflow", "document.documentElement.scrollWidth <= window.innerWidth + 2");
   await expect(
     cdp,
@@ -54,7 +58,7 @@ try {
   await expect(
     cdp,
     "email form action",
-    "document.querySelector('.booking-form')?.action.includes('shineteatr@gmail.com')"
+    "document.querySelector('.booking-form')?.action.includes('101kms@mail.ru')"
   );
 
   await setViewport(cdp, 390, 1400, true);
@@ -75,6 +79,7 @@ try {
   await navigate(cdp, `${baseUrl}/`);
   await setViewport(cdp, 390, 900, true);
   await delay(300);
+  await expect(cdp, "home mobile no body overflow", "document.documentElement.scrollWidth <= window.innerWidth + 2");
   await expect(cdp, "hero animation hidden on mobile", "getComputedStyle(document.querySelector('.hero-visual')).display === 'none'");
 
   if (consoleErrors.length) {

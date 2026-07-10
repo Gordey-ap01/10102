@@ -7,13 +7,15 @@
   let records = [];
   let currentServices = [];
   let currentDevice = null;
+  const mapEmbedUrl =
+    "https://yandex.ru/map-widget/v1/?ll=137.026408%2C50.568069&mode=search&oid=27521144258&ol=biz&z=12";
 
   const branches = [
     {
       id: "vokzalnaya",
       title: "Вокзальная, 47",
       schedule: "Ежедневно 10:00-19:00",
-      phone: "+7 (968) 170-23-36",
+      phone: "+7 (994) 076-01-01",
     },
     {
       id: "orehova",
@@ -27,50 +29,50 @@
     id: "onsite",
     title: "Заказать выезд",
     schedule: "Мастер приедет к вам после согласования времени",
-    phone: "+7 (968) 170-23-36",
+    phone: "+7 (994) 076-01-01",
   };
 
   const categoryCopy = {
     telefony: {
       title: "Телефоны",
       repairTitle: "Ремонт телефонов",
-      subtitle: "Выберите бренд и модель, затем отметьте нужные работы.",
-      intro: "Смартфоны Apple, Samsung, Xiaomi, Honor, Realme и другие модели.",
+      subtitle: "Замена компонентов, стекла экрана, прошивка и извлечение данных.",
+      intro: "Меняем экраны, аккумуляторы и другие компоненты, меняем стекло с сохранением оригинального дисплея, прошиваем и извлекаем данные.",
       icon: phoneIcon,
     },
     noutbuki: {
       title: "Ноутбуки",
       repairTitle: "Ремонт ноутбуков",
-      subtitle: "Чистка, матрицы, клавиатуры, питание, Windows и апгрейды.",
-      intro: "Диагностика, профилактика и ремонт популярных ноутбуков.",
+      subtitle: "Ремонт плат, чистка, настройка программ, апгрейд и модернизация.",
+      intro: "Ремонтируем платы, перепаиваем процессоры и видеокарты, чистим, настраиваем программы, улучшаем и модернизируем ноутбуки.",
       icon: laptopIcon,
     },
     kompyutery: {
       title: "Компьютеры",
       repairTitle: "Ремонт компьютеров",
-      subtitle: "Системные блоки, моноблоки, сборка, чистка и выездной ремонт.",
-      intro: "Настройка, сборка и восстановление домашних и рабочих ПК.",
+      subtitle: "Системные блоки, моноблоки, сборка, чистка, настройка и выездной ремонт.",
+      intro: "Чистим и настраиваем программы, ремонтируем платы, улучшаем и модернизируем компьютеры для дома, офиса и игр.",
       icon: pcIcon,
     },
     pristavki: {
       title: "Приставки",
       repairTitle: "Ремонт игровых приставок",
-      subtitle: "PlayStation, Xbox, Nintendo: чистка, HDMI, питание и платы.",
-      intro: "Обслуживание приставок и восстановление после перегрева.",
+      subtitle: "Пайка, прошивка, чиповка, чистка, обслуживание и ремонт джойстиков.",
+      intro: "Ремонтируем и паяем приставки, прошиваем и чипуем, обслуживаем и чистим, восстанавливаем джойстики.",
       icon: consoleIcon,
     },
     videokarty: {
       title: "Видеокарты",
       repairTitle: "Ремонт видеокарт",
       subtitle: "Чистка, термопрокладки, пайка, BIOS и системы охлаждения.",
-      intro: "Работы с NVIDIA и AMD без лишних шагов в каталоге.",
+      intro: "Обслуживаем охлаждение, меняем термопрокладки, восстанавливаем питание, прошиваем BIOS и выполняем сложную пайку.",
       icon: gpuIcon,
     },
     gejmpady: {
       title: "Геймпады",
       repairTitle: "Ремонт геймпадов",
       subtitle: "Стики, кнопки, аккумуляторы, разъёмы и триггеры.",
-      intro: "Контроллеры PlayStation, Xbox и Nintendo.",
+      intro: "Ремонтируем стики, кнопки, аккумуляторы, разъёмы и триггеры контроллеров PlayStation, Xbox и Nintendo.",
       icon: gamepadIcon,
     },
   };
@@ -87,7 +89,7 @@
   async function loadCatalog() {
     try {
       const response = await fetch(`${root}/data/services.csv`, { cache: "no-store" });
-      if (!response.ok) throw new Error(`CSV ${response.status}`);
+      if (!response.ok) throw new Error(`Services ${response.status}`);
       const text = await response.text();
       records = parseCSV(text).map(normalizeRecord);
       if (!app) return;
@@ -98,7 +100,7 @@
       if (pageState.page === "onsite") renderOnsitePage();
     } catch (error) {
       if (app) {
-        app.innerHTML = `<section class="section"><div class="container"><div class="error-box">Не удалось загрузить CSV с услугами. Проверьте файл <strong>data/services.csv</strong> и путь публикации.</div></div></section>`;
+        app.innerHTML = `<section class="section"><div class="container"><div class="error-box">Не удалось загрузить услуги и цены. Попробуйте обновить страницу или позвоните в сервис.</div></div></section>`;
       }
       console.error(error);
     }
@@ -107,24 +109,26 @@
   function normalizeRecord(row, index) {
     return {
       id: row.id || `service-${index}`,
-      position: row["позиция"] || row.position || "",
+      position: row["вид_работы"] || row["позиция"] || row.position || "",
       category: row["категория"] || row.category || "",
-      cost: row["стоимость"] || row.cost || "",
+      cost: row["цена"] || row["стоимость"] || row.cost || "",
       description: row["описание"] || row.description || "",
-      image: row["ссылка_на_картинку"] || row.image || "",
+      image: row["фото_1"] || row["ссылка_на_картинку"] || row.image || "",
       categorySlug: row.category_slug || "",
       categoryTitle: row.category_title || row["категория"] || "",
       brandSlug: row.brand_slug || "",
-      brand: row.brand || "",
+      brand: row["бренд"] || row.brand || "",
       modelSlug: row.model_slug || "",
-      model: row.model || "",
-      time: row.time || "",
-      badge: row.badge || "",
+      model: row["устройство"] || row.model || "",
+      time: row["время_от"] || row.time || "",
+      badge: row["пометка"] || row.badge || "",
       pageUrl: row.page_url || "",
     };
   }
 
   function parseCSV(text) {
+    const firstLine = text.split(/\r?\n/, 1)[0] || "";
+    const delimiter = (firstLine.match(/;/g) || []).length > (firstLine.match(/,/g) || []).length ? ";" : ",";
     const rows = [];
     let row = [];
     let field = "";
@@ -144,7 +148,7 @@
         }
       } else if (char === '"') {
         quoted = true;
-      } else if (char === ",") {
+      } else if (char === delimiter) {
         row.push(field);
         field = "";
       } else if (char === "\n") {
@@ -239,18 +243,15 @@
             <nav class="breadcrumbs">
               <a href="${root}/index.html">Главная</a>
               <span>/</span>
-              <span>${escapeHTML(options.onsite ? "Выездной ремонт" : category.repairTitle)}</span>
+              <span>${escapeHTML(options.onsite ? "Выездной ремонт" : category.title)}</span>
             </nav>
-            <h1 class="page-title">${escapeHTML(
-              options.onsite ? "Выездной ремонт техники" : category.repairTitle
-            )}</h1>
             <div class="catalog-tabs">
               ${renderTopTabs(activeRecord.categorySlug, options.onsite)}
             </div>
           </div>
         </section>
 
-        <section class="section">
+        <section class="section catalog-section">
           <div class="container">
             <div class="catalog-controls">
               <div>
@@ -292,6 +293,7 @@
             </div>
           </div>
         </section>
+        ${renderContactSection()}
       </div>
     `;
 
@@ -333,13 +335,13 @@
           <h2 class="device-title">${escapeHTML(title)}</h2>
           <p class="device-description">${escapeHTML(
             options.onsite
-              ? "Для ноутбуков и компьютеров можно оставить заявку на выезд мастера. Карта убрана: филиал или выезд выбирается крупными карточками в форме."
+              ? "Мастер приедет домой, в офис или на производство. Возможен ремонт на месте или доставка устройства в сервис после диагностики."
               : category.intro
           )}</p>
           <div class="device-facts">
             <span><strong>от 30 мин</strong> типовой ремонт</span>
             <span><strong>до 12 мес</strong> гарантия</span>
-            <span><strong>CSV</strong> цены без правок HTML</span>
+            <span><strong>2 филиала</strong> в городе</span>
           </div>
         </div>
       </article>
@@ -348,18 +350,25 @@
 
   function renderPricePanel(activeRecord, category) {
     const services = getServices(activeRecord);
+    const firstServices = services.slice(0, 7);
+    const extraServices = services.slice(7);
     return `
       <article class="prices-panel">
         <div class="prices-panel__head">
           <div>
             <p class="eyebrow">Цена работы без детали</p>
-            <h2>Доступные работы</h2>
             <p>${escapeHTML(category.subtitle)}</p>
           </div>
           <span class="warranty-pill">Гарантия до 12 мес</span>
         </div>
         <div class="price-list">
-          ${services.map(renderServiceRow).join("")}
+          ${firstServices.map(renderServiceRow).join("")}
+          ${
+            extraServices.length
+              ? `<div class="extra-services" hidden>${extraServices.map(renderServiceRow).join("")}</div>
+                <button class="expand-services" type="button" data-expanded="false">Раскройте весь список услуг</button>`
+              : ""
+          }
         </div>
       </article>
     `;
@@ -379,6 +388,57 @@
         <div class="price-row__price ${free ? "free" : ""}">${escapeHTML(service.cost)}</div>
         <button class="select-service" type="button">${selected ? "Выбрано" : "Выбрать"}</button>
       </div>
+    `;
+  }
+
+  function renderContactSection() {
+    return `
+      <section id="contacts" class="section section-gray contact-section">
+        <div class="container">
+          <div class="section-head">
+            <p class="eyebrow">Контакты</p>
+            <h2 class="section-title">Остались вопросы? Свяжитесь - бесплатная консультация!</h2>
+            <p class="section-text">Филиалы работают ежедневно с 10:00 до 19:00 без перерывов и выходных. Можно приехать в сервис или оставить заявку на выезд мастера.</p>
+          </div>
+          <div class="contact-grid">
+            <form class="contact-form" action="https://formsubmit.co/101kms@mail.ru" method="POST">
+              <input type="hidden" name="_subject" value="Заявка с сайта Сервис 101">
+              <input type="hidden" name="_template" value="table">
+              <input type="hidden" name="_captcha" value="false">
+              <input class="input" type="text" name="Имя" placeholder="Ваше имя" required>
+              <input class="input" type="tel" name="Телефон" placeholder="+7 (___) ___-__-__" required>
+              <select class="input" name="Тип устройства" required>
+                <option value="">Тип устройства</option>
+                <option>Смартфон или планшет</option>
+                <option>Ноутбук</option>
+                <option>Компьютер</option>
+                <option>Игровая приставка</option>
+                <option>Геймпад</option>
+                <option>Другое</option>
+              </select>
+              <textarea class="input" name="Описание" rows="5" placeholder="Опишите неисправность"></textarea>
+              <button class="btn btn-primary" type="submit">Отправить заявку</button>
+            </form>
+            <div class="contact-card">
+              <div class="branch-list">
+                <a class="branch-item" href="https://go.2gis.com/ooow7o" target="_blank" rel="noreferrer">
+                  <strong>ул. Вокзальная, 47</strong>
+                  <span>Ежедневно 10:00-19:00</span>
+                </a>
+                <a class="branch-item" href="https://go.2gis.com/8z19r" target="_blank" rel="noreferrer">
+                  <strong>ул. Орехова, 54</strong>
+                  <span>Ежедневно 10:00-19:00</span>
+                </a>
+              </div>
+              <div class="contact-lines">
+                <a href="tel:+79940760101">+7 (994) 076-01-01</a>
+                <a href="mailto:101kms@mail.ru">101kms@mail.ru</a>
+              </div>
+              <iframe class="map-frame" title="Сервис 101 на карте" src="${mapEmbedUrl}" loading="lazy"></iframe>
+            </div>
+          </div>
+        </div>
+      </section>
     `;
   }
 
@@ -435,6 +495,17 @@
   }
 
   function bindServiceButtons() {
+    document.querySelectorAll(".expand-services").forEach((button) => {
+      button.addEventListener("click", () => {
+        const extra = button.previousElementSibling;
+        const expanded = button.dataset.expanded === "true";
+        if (!extra) return;
+        extra.hidden = expanded;
+        button.dataset.expanded = expanded ? "false" : "true";
+        button.textContent = expanded ? "Раскройте весь список услуг" : "Скрыть список услуг";
+      });
+    });
+
     document.querySelectorAll(".price-row").forEach((row) => {
       const id = row.dataset.serviceId;
       const service = currentServices.find((item) => item.id === id);
@@ -487,7 +558,7 @@
     modal.classList.add("visible");
     if (mode === "sent") {
       modal.querySelector(".modal__head p").textContent =
-        "Если FormSubmit попросил подтвердить адрес, подтвердите письмо один раз. Дальше заявки будут приходить автоматически.";
+        "Заявка отправлена. Мастер свяжется с вами, чтобы уточнить устройство, филиал и время.";
     }
     renderModalServices();
     renderBranchCards();
@@ -515,8 +586,8 @@
           </div>
           <button class="modal__close" type="button" aria-label="Закрыть">×</button>
         </div>
-        <form class="booking-form" action="https://formsubmit.co/shineteatr@gmail.com" method="POST">
-          <input type="hidden" name="_subject" value="Новая заявка с сайта 10102">
+        <form class="booking-form" action="https://formsubmit.co/101kms@mail.ru" method="POST">
+          <input type="hidden" name="_subject" value="Новая заявка с сайта Сервис 101">
           <input type="hidden" name="_template" value="table">
           <input type="hidden" name="_captcha" value="false">
           <input type="hidden" name="_next" value="">
@@ -546,7 +617,7 @@
           </div>
 
           <button class="btn btn-dark" type="submit">Отправить заявку</button>
-          <p class="form-footnote">Заявка отправляется на shineteatr@gmail.com через FormSubmit. Карта в форме не используется.</p>
+          <p class="form-footnote">Нажимая кнопку, вы отправляете заявку в Сервис 101. Мастер перезвонит и уточнит детали ремонта.</p>
         </form>
       </div>
     `;
