@@ -2325,3 +2325,283 @@ body {
     min-height: 300px;
   }
 }
+
+/* Project 3 visual alignment */
+.home-page {
+  background: var(--slate-950);
+}
+
+.home-page .site-header {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+  background:
+    radial-gradient(circle at 12% 0, rgba(14, 165, 233, 0.16), transparent 30%),
+    rgba(2, 6, 23, 0.9);
+  color: var(--white);
+  box-shadow: none;
+}
+
+.home-page .brand__mark {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: var(--slate-950);
+  color: var(--white);
+  box-shadow: 0 12px 30px rgba(2, 6, 23, 0.28);
+}
+
+.home-page .brand__name {
+  color: rgba(255, 255, 255, 0.62);
+  font-weight: 700;
+}
+
+.home-page .brand__city,
+.home-page .header-actions,
+.home-page .header-actions a:first-child {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.home-page .odometer {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(15, 23, 42, 0.48);
+  box-shadow: none;
+}
+
+.home-page .odometer__num {
+  color: var(--sky-400);
+}
+
+.home-page .odometer__label {
+  color: rgba(255, 255, 255, 0.58);
+}
+
+.home-page .hero {
+  min-height: calc(100vh - 88px);
+  background: var(--slate-950);
+  color: var(--white);
+}
+
+.home-page .hero::before {
+  background:
+    radial-gradient(circle at top left, rgba(14, 165, 233, 0.24), transparent 30%),
+    radial-gradient(circle at 80% 20%, rgba(59, 130, 246, 0.2), transparent 24%),
+    linear-gradient(180deg, rgba(15, 23, 42, 0.92), rgba(2, 6, 23, 0.98));
+}
+
+.home-page .hero__inner {
+  padding-block: clamp(82px, 9vw, 122px) clamp(74px, 8vw, 112px);
+}
+
+.home-page .hero h1 {
+  color: var(--white);
+  font-size: clamp(48px, 5.6vw, 86px);
+  letter-spacing: -0.055em;
+}
+
+.home-page .hero__lead {
+  max-width: 610px;
+  color: var(--slate-300);
+}
+
+.home-page .eyebrow-light {
+  color: var(--sky-300);
+}
+
+.home-page .hero__proof {
+  display: none;
+}
+
+.home-page .hero .btn-ghost {
+  border-color: rgba(255, 255, 255, 0.18);
+  color: var(--white);
+}
+
+.home-page .hero .btn-ghost:hover {
+  border-color: rgba(125, 211, 252, 0.42);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.home-page .hero-visual__glow {
+  background:
+    radial-gradient(circle at 25% 20%, rgba(125, 211, 252, 0.42), transparent 30%),
+    radial-gradient(circle at 80% 20%, rgba(56, 189, 248, 0.22), transparent 24%),
+    radial-gradient(circle at 50% 80%, rgba(15, 23, 42, 0.85), transparent 42%);
+}
+
+.home-page .float-card {
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: var(--shadow-dark);
+}
+
+.home-page .float-violet {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.95), rgba(99, 102, 241, 0.9), var(--slate-950));
+}
+
+.cat-icon {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.cat-icon.grad-phone,
+.cat-grid .cat-card:nth-child(1) .cat-icon {
+  background: linear-gradient(to bottom right, #0ea5e9, #06b6d4, #1d4ed8);
+}
+
+.cat-icon.grad-laptop,
+.cat-grid .cat-card:nth-child(2) .cat-icon {
+  background: linear-gradient(to bottom right, #6366f1, #0ea5e9, #06b6d4);
+}
+
+.cat-icon.grad-console,
+.cat-grid .cat-card:nth-child(3) .cat-icon {
+  background: linear-gradient(to bottom right, #06b6d4, #3b82f6, #4f46e5);
+}
+
+.cat-icon.grad-pc,
+.cat-grid .cat-card:nth-child(4) .cat-icon {
+  background: linear-gradient(to bottom right, #3b82f6, #6366f1, #0f172a);
+}
+
+.cat-icon.grad-gpu,
+.cat-grid .cat-card:nth-child(5) .cat-icon {
+  background: linear-gradient(to bottom right, #8b5cf6, #6366f1, #0ea5e9);
+}
+
+.cat-icon.grad-gamepad,
+.cat-grid .cat-card:nth-child(6) .cat-icon {
+  background: linear-gradient(to bottom right, #10b981, #06b6d4, #2563eb);
+}
+
+.cat-card:hover .cat-icon {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 18px 38px rgba(14, 165, 233, 0.28);
+}
+
+.catalog-tabs .tab {
+  gap: 8px;
+}
+
+.tab-icon {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #e2e8f0;
+  border-radius: 11px;
+  background: #f8fafc;
+  color: #94a3b8;
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.tab-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.tab:hover .tab-icon,
+.tab.active .tab-icon {
+  border-color: transparent;
+  color: var(--white);
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 12px 26px rgba(14, 165, 233, 0.2);
+}
+
+.tab.active .tab-icon {
+  animation: tab-icon-pop 0.42s ease;
+}
+
+.tab--telefony:hover .tab-icon,
+.tab--telefony.active .tab-icon {
+  background: linear-gradient(to bottom right, #0ea5e9, #06b6d4, #1d4ed8);
+}
+
+.tab--noutbuki:hover .tab-icon,
+.tab--noutbuki.active .tab-icon {
+  background: linear-gradient(to bottom right, #6366f1, #0ea5e9, #06b6d4);
+}
+
+.tab--kompyutery:hover .tab-icon,
+.tab--kompyutery.active .tab-icon {
+  background: linear-gradient(to bottom right, #3b82f6, #6366f1, #0f172a);
+}
+
+.tab--vyezd:hover .tab-icon,
+.tab--vyezd.active .tab-icon {
+  background: linear-gradient(to bottom right, #10b981, #06b6d4, #2563eb);
+}
+
+.device-card__media {
+  background:
+    radial-gradient(circle at 38% 44%, rgba(255, 255, 255, 0.86), transparent 26%),
+    radial-gradient(circle at 20% 20%, rgba(125, 211, 252, 0.36), transparent 30%),
+    radial-gradient(circle at 84% 14%, rgba(14, 165, 233, 0.28), transparent 26%),
+    linear-gradient(135deg, #f8fafc 0%, #e0f2fe 54%, #dbeafe 100%);
+}
+
+.device-card__media::before {
+  background: rgba(255, 255, 255, 0.66);
+  box-shadow: inset 0 0 0 1px rgba(186, 230, 253, 0.45);
+}
+
+.device-media-tags {
+  position: absolute;
+  inset: 18px 18px auto;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.device-media-tags span {
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  border-radius: 999px;
+  padding: 7px 10px;
+  background: rgba(255, 255, 255, 0.48);
+  color: #0369a1;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.02em;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 24px rgba(14, 165, 233, 0.08);
+}
+
+@keyframes tab-icon-pop {
+  0% {
+    transform: translateY(0) scale(0.96);
+  }
+  55% {
+    transform: translateY(-3px) scale(1.08);
+  }
+  100% {
+    transform: translateY(-2px) scale(1.04);
+  }
+}
+
+@media (max-width: 760px) {
+  .home-page .hero {
+    min-height: auto;
+  }
+
+  .home-page .hero-visual {
+    display: none;
+  }
+
+  .tab-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 10px;
+  }
+
+  .device-media-tags {
+    inset: 14px 14px auto;
+  }
+
+  .device-media-tags span {
+    padding: 6px 9px;
+  }
+}

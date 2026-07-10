@@ -20,26 +20,32 @@ const categoryMeta = {
   telefony: {
     text: "Смартфоны Apple, Samsung, Xiaomi, Honor и Realme с быстрым подбором работ.",
     icon: phoneIcon(),
+    gradient: "grad-phone",
   },
   noutbuki: {
     text: "Матрицы, клавиатуры, питание, чистка, SSD и установка Windows.",
     icon: laptopIcon(),
+    gradient: "grad-laptop",
   },
   kompyutery: {
     text: "Сборка, обслуживание, блоки питания, платы, ОС и выездной ремонт.",
     icon: pcIcon(),
+    gradient: "grad-pc",
   },
   pristavki: {
     text: "PlayStation, Xbox, Nintendo: HDMI, питание, чистка и ремонт плат.",
     icon: consoleIcon(),
+    gradient: "grad-console",
   },
   videokarty: {
     text: "NVIDIA и AMD: термопрокладки, пайка, BIOS и системы охлаждения.",
     icon: gpuIcon(),
+    gradient: "grad-gpu",
   },
   gejmpady: {
     text: "Стики, кнопки, аккумуляторы и разъёмы контроллеров.",
     icon: gamepadIcon(),
+    gradient: "grad-gamepad",
   },
 };
 
@@ -156,7 +162,8 @@ function resolveServices(services) {
   return catalog.serviceTemplates[services] || [];
 }
 
-function layout({ root, title, description, body, state }) {
+function layout({ root, page, title, description, body, state }) {
+  const bodyClass = page === "home" ? "home-page" : "inner-page";
   return `<!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -166,7 +173,7 @@ function layout({ root, title, description, body, state }) {
   <meta name="description" content="${escapeHTML(description)}">
   <link rel="stylesheet" href="${root}/styles.css">
 </head>
-<body>
+<body class="${bodyClass}">
 ${header(root)}
 <main id="app">
 ${body}
@@ -318,9 +325,9 @@ ${contactBody(".")}`;
 }
 
 function categoryCard(category) {
-  const meta = categoryMeta[category.id] || { text: category.title, icon: pcIcon() };
+  const meta = categoryMeta[category.id] || { text: category.title, icon: pcIcon(), gradient: "grad-pc" };
   return `<a class="cat-card" href="./remont/${category.id}/index.html">
-    <span class="cat-icon">${meta.icon}</span>
+    <span class="cat-icon ${meta.gradient}">${meta.icon}</span>
     <span>
       <span class="cat-title">${escapeHTML(category.name)}</span>
       <span class="cat-text">${escapeHTML(meta.text)}</span>

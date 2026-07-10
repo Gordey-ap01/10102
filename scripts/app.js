@@ -309,11 +309,25 @@
       { slug: "onsite", label: "Выездной ремонт", href: `${root}/remont/vyezdnoj-remont/index.html` },
     ];
     return tabs
-      .map(
-        (tab) =>
-          `<a class="tab ${tab.slug === activeSlug || (onsite && tab.slug === "onsite") ? "active" : ""}" href="${tab.href}">${tab.label}</a>`
-      )
+      .map((tab) => {
+        const active = tab.slug === activeSlug || (onsite && tab.slug === "onsite");
+        const visualSlug = tab.slug === "onsite" ? "vyezd" : tab.slug;
+        return `<a class="tab tab--${visualSlug} ${active ? "active" : ""}" href="${tab.href}">
+          <span class="tab-icon tab-icon--${visualSlug}" aria-hidden="true">${tabIcon(visualSlug)}</span>
+          <span>${tab.label}</span>
+        </a>`;
+      })
       .join("");
+  }
+
+  function tabIcon(slug) {
+    const icons = {
+      telefony: phoneIcon,
+      noutbuki: laptopIcon,
+      kompyutery: pcIcon,
+      vyezd: pcIcon,
+    };
+    return (icons[slug] || pcIcon)();
   }
 
   function renderDeviceCard(activeRecord, category, options = {}) {
@@ -329,6 +343,11 @@
               ? `<img src="${escapeAttr(activeRecord.image)}" alt="${escapeAttr(title)}" loading="eager">`
               : `<div class="device-card__placeholder" aria-hidden="true"></div>`
           }
+          <div class="device-media-tags" aria-hidden="true">
+            <span>от 30 мин</span>
+            <span>гарантия до 12 мес</span>
+            <span>2 филиала</span>
+          </div>
         </div>
         <div class="device-card__body">
           <p class="device-kicker">${escapeHTML(category.title)}</p>

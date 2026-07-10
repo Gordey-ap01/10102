@@ -37,6 +37,9 @@ try {
   await setViewport(cdp, 1440, 1100, false);
   await navigate(cdp, `${baseUrl}/remont/telefony/apple/iphone-15/`);
   await expect(cdp, "desktop price rows", "document.querySelectorAll('.price-row').length >= 10");
+  await expect(cdp, "category tabs have icons", "document.querySelectorAll('.catalog-tabs .tab-icon').length >= 4");
+  await expect(cdp, "active category icon present", "document.querySelector('.catalog-tabs .tab.active .tab-icon') !== null");
+  await expect(cdp, "device media tags present", "document.querySelectorAll('.device-media-tags span').length >= 3");
   await expect(cdp, "no repeated page title", "document.querySelector('.page-title') === null");
   await expect(cdp, "no breadcrumbs", "document.querySelector('.breadcrumbs') === null");
   await expect(cdp, "no available works heading", "document.querySelector('.prices-panel__head h2') === null");
@@ -90,6 +93,8 @@ try {
   await navigate(cdp, `${baseUrl}/`);
   await setViewport(cdp, 390, 900, true);
   await delay(300);
+  await expect(cdp, "home page class", "document.body.classList.contains('home-page')");
+  await expect(cdp, "home dark hero", "getComputedStyle(document.querySelector('.hero')).backgroundColor === 'rgb(2, 6, 23)'");
   await expect(cdp, "home mobile no body overflow", "document.documentElement.scrollWidth <= window.innerWidth + 2");
   await expect(cdp, "hero animation hidden on mobile", "getComputedStyle(document.querySelector('.hero-visual')).display === 'none'");
 
