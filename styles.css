@@ -796,6 +796,9 @@ img {
 .brand-counter {
   display: grid;
   justify-items: end;
+  position: absolute;
+  top: 0;
+  right: 0;
   min-width: 240px;
   border: 1px solid #bae6fd;
   border-radius: 22px;
@@ -1892,7 +1895,23 @@ body {
 }
 
 .catalog-section {
-  padding-block: 26px clamp(46px, 6vw, 72px);
+  padding-block: 6px clamp(46px, 6vw, 72px);
+}
+
+.catalog-controls {
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.catalog-controls > div:first-child {
+  position: relative;
+  min-height: 76px;
+  padding-right: 270px;
+}
+
+.control-heading {
+  display: block;
+  margin-bottom: 0;
 }
 
 .catalog-tabs,
@@ -2255,7 +2274,16 @@ body {
 
   .catalog-tabs,
   .chip-row {
-    gap: 24px;
+    gap: 18px;
+  }
+
+  .catalog-section {
+    padding-top: 10px;
+  }
+
+  .catalog-controls {
+    gap: 6px;
+    margin-bottom: 16px;
   }
 
   .device-card__media {
@@ -2271,14 +2299,21 @@ body {
     grid-template-columns: 1fr;
   }
 
+  .catalog-controls > div:first-child {
+    min-height: 0;
+    padding-right: 0;
+  }
+
   .control-heading {
+    display: flex;
     align-items: stretch;
     flex-direction: column;
-    gap: 10px;
+    gap: 6px;
   }
 
   .brand-counter {
     justify-items: start;
+    position: static;
     min-width: 0;
   }
 
