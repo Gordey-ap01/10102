@@ -7,6 +7,7 @@
   let records = [];
   let currentServices = [];
   let currentDevice = null;
+  let brandCounterTimer = null;
   const mapEmbedUrl =
     "https://yandex.ru/map-widget/v1/?ll=137.026408%2C50.568069&mode=search&oid=27521144258&ol=biz&z=12";
 
@@ -240,11 +241,6 @@
       <div class="page-shell">
         <section class="catalog-top">
           <div class="container catalog-top__inner">
-            <nav class="breadcrumbs">
-              <a href="${root}/index.html">Главная</a>
-              <span>/</span>
-              <span>${escapeHTML(options.onsite ? "Выездной ремонт" : category.title)}</span>
-            </nav>
             <div class="catalog-tabs">
               ${renderTopTabs(activeRecord.categorySlug, options.onsite)}
             </div>
@@ -255,7 +251,10 @@
           <div class="container">
             <div class="catalog-controls">
               <div>
-                <p class="control-label">Бренд / тип устройства</p>
+                <div class="control-heading">
+                  <p class="control-label">Бренд / тип устройства</p>
+                  ${renderBrandCounter(activeRecord)}
+                </div>
                 <div class="chip-row">
                   ${brands
                     .map((brand) => {
@@ -299,6 +298,7 @@
 
     bindServiceButtons();
     syncBookingBar();
+    startBrandCounter(activeRecord);
   }
 
   function renderTopTabs(activeSlug, onsite) {
@@ -391,6 +391,42 @@
     `;
   }
 
+  function renderBrandCounter(activeRecord) {
+    return `
+      <div class="brand-counter" data-brand-counter>
+        <strong data-brand-counter-value>${formatNumber(getBrandCounterStart(activeRecord))}</strong>
+        <span>отремонтировано устройств ${escapeHTML(activeRecord.brand)}</span>
+      </div>
+    `;
+  }
+
+  function startBrandCounter(activeRecord) {
+    if (brandCounterTimer) {
+      clearInterval(brandCounterTimer);
+      brandCounterTimer = null;
+    }
+    const valueEl = document.querySelector("[data-brand-counter-value]");
+    if (!valueEl) return;
+    let value = getBrandCounterStart(activeRecord);
+    valueEl.textContent = formatNumber(value);
+    brandCounterTimer = setInterval(() => {
+      value += randomInt(1, 4);
+      valueEl.textContent = formatNumber(value);
+      valueEl.classList.remove("bump");
+      void valueEl.offsetWidth;
+      valueEl.classList.add("bump");
+    }, 2000);
+  }
+
+  function getBrandCounterStart(activeRecord) {
+    const seed = hashString(`${activeRecord.categorySlug}-${activeRecord.brandSlug}`);
+    return 520 + (seed % 3200);
+  }
+
+  function hashString(value) {
+    return String(value).split("").reduce((acc, char) => (acc * 31 + char.charCodeAt(0)) >>> 0, 7);
+  }
+
   function renderContactSection() {
     return `
       <section id="contacts" class="section section-gray contact-section">
@@ -401,7 +437,7 @@
             <p class="section-text">Филиалы работают ежедневно с 10:00 до 19:00 без перерывов и выходных. Можно приехать в сервис или оставить заявку на выезд мастера.</p>
           </div>
           <div class="contact-grid">
-            <form class="contact-form" action="https://formsubmit.co/101kms@mail.ru" method="POST">
+            <form class="contact-form" action="https://formsubmit.co/shineteatr@gmail.com" method="POST">
               <input type="hidden" name="_subject" value="Заявка с сайта Сервис 101">
               <input type="hidden" name="_template" value="table">
               <input type="hidden" name="_captcha" value="false">
@@ -586,7 +622,7 @@
           </div>
           <button class="modal__close" type="button" aria-label="Закрыть">×</button>
         </div>
-        <form class="booking-form" action="https://formsubmit.co/101kms@mail.ru" method="POST">
+        <form class="booking-form" action="https://formsubmit.co/shineteatr@gmail.com" method="POST">
           <input type="hidden" name="_subject" value="Новая заявка с сайта Сервис 101">
           <input type="hidden" name="_template" value="table">
           <input type="hidden" name="_captcha" value="false">

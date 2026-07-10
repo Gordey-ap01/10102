@@ -38,9 +38,15 @@ try {
   await navigate(cdp, `${baseUrl}/remont/telefony/apple/iphone-15/`);
   await expect(cdp, "desktop price rows", "document.querySelectorAll('.price-row').length >= 10");
   await expect(cdp, "no repeated page title", "document.querySelector('.page-title') === null");
+  await expect(cdp, "no breadcrumbs", "document.querySelector('.breadcrumbs') === null");
   await expect(cdp, "no available works heading", "document.querySelector('.prices-panel__head h2') === null");
   await expect(cdp, "collapsed services button", "document.querySelector('.expand-services')?.textContent.includes('Раскройте')");
   await expect(cdp, "contact block present", "document.querySelector('.contact-section .contact-form') !== null && document.querySelector('.map-frame') !== null");
+  await expect(cdp, "brand counter present", "document.querySelector('[data-brand-counter-value]') !== null");
+  const brandCounterBefore = await cdp.eval("document.querySelector('[data-brand-counter-value]')?.textContent");
+  await delay(2300);
+  const brandCounterAfter = await cdp.eval("document.querySelector('[data-brand-counter-value]')?.textContent");
+  if (brandCounterBefore.result.value === brandCounterAfter.result.value) failures.push("brand counter changes");
   await expect(cdp, "desktop no body overflow", "document.documentElement.scrollWidth <= window.innerWidth + 2");
   await expect(
     cdp,
@@ -58,7 +64,12 @@ try {
   await expect(
     cdp,
     "email form action",
-    "document.querySelector('.booking-form')?.action.includes('101kms@mail.ru')"
+    "document.querySelector('.booking-form')?.action.includes('shineteatr@gmail.com')"
+  );
+  await expect(
+    cdp,
+    "contact form action",
+    "document.querySelector('.contact-form')?.action.includes('shineteatr@gmail.com')"
   );
 
   await setViewport(cdp, 390, 1400, true);
